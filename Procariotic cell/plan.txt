@@ -1,0 +1,84 @@
+// proteins are goblal funtions. 
+
+def(scientific method):
+Scientific method to make investigations. 
+
+1.Ask a question 
+2.Do background research 
+3.Construct an Hypothesis 
+4.Define a thesis.
+5.Test with experiment 
+6. Is procedure working ? 
+If no go back to 5 
+If yes :
+Analize Data Conclusions
+If returs aling with hypothesis then do 7
+If return aling partially or result does not aling with Hypothesis then do 7. 
+7. Communicate results 
+
+def (context):
+
+look on the internet about scitific Theories (usually an explanation for a more general phenomenon); and scientific hypotheses (ddress more specific issues) realted to the topic you are ask for. 
+
+
+
+def (cellulose):
+leave outside ciscunstances that have more than 60 > chance(luck) to happen. in the inside of the membrane 
+leave inside the cell that depend more tahn 51% on data and info to happen (for example the forecast of the wheter).  
+. The idea is to reduce the factor of chance. 
+
+
+    def(mRNA):
+    Find an article in which the ezimes funtion will analysise. 
+
+        def (enzymes 1):
+
+        Suugest unforlding a problem. the ideas is to go down the rabbit hole, 
+        use the method of the 5 why around an issue to get to its core. 
+        the idea is to make an hypothesis. 
+
+
+
+
+        def (enzymes 3):
+        identify the key vocabulaty to undestand the problem. evaluate casue, consecuence, continuety, perspective, importance. Help build a thesis in base of the evidence considering real life scenarios.
+        Forumulate the thesis as a questions and Include vocabulaty such as : Influence, dependent, no depenedet, what causes A causes B, Until which point this hold true?  
+
+            def(protein A):
+            proteins are global funtions that take care of the condition healthy or unhealty of the Data. 
+            
+            verify data (which ways) . what are the implications of the stadistics values in real life. 
+            
+            def(protein B): 
+            Historical antecendent. the more ancedencents pay more atention to the issue. 
+
+            def(protein_chi_square_enzyma):
+            if two variables are supposed to be independet, and we are comparing categorical varaiables (with no inferals about causation).
+            find the values for this test. 
+
+            help the user construct the null and alternative hypothesys base on the example:
+            The null hypothesis (H0) and alternative hypothesis (H1) of the Chi-Square Test of Independence can be expressed in two different but equivalent ways:
+
+            H0: "[Variable 1] is independent of [Variable 2]"
+            H1: "[Variable 1] is not independent of [Variable 2]"
+
+                def(protein_variables)
+                    List the options of variable that are significant for the issue. 
+
+
+            1. The Home-Field Advantage. 
+            You can use it to determine if playing at a home stadium provides a statistically significant advantage over a completely random distribution of outcomes.
+
+        
+
+def (enzymes_trail&error):
+
+    set the conditions to know if a predction was correct or not. the idea is to carry an experiment as inexpensive as posible
+    or to make a prototype. the enzyme will realy on the funtion of testing hypothesis. 
+    This enzyme will list the reason why or why not the hypotesis was correct or not. 
+    ex: the fed reaise the interest rate for A, B C reasons. 
+    
+
+    def(protein_record&test_hypotesys):
+    generate an hypothesis, for exaple : X is going to happen becasue A, B,C after a date (or before a ciertain date). predicction made at x time and date. 
+    

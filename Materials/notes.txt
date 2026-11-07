@@ -1,0 +1,10 @@
+assigment 10 
+
+problem 6 : should we start from left to right of right to lef ? 
+
+
+problem 5.7 what is the difference btw moment and bending moment, and how the equations are change by the case. explain if there is diffrence or not. 
+
+is there a way to have an intuition for this prebloms?  
+
+to calculate the shear streess and then the moment in each segment we should follow a certain order to make it faster ??  ßß

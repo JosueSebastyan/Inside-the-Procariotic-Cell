@@ -1,0 +1,73 @@
+pirnt("#how to solve problms in heat transfer. 
+I notice that rarely my professor ask us to follow the same derivation process that they did in class. 
+in class we see the derivatives and try to follow but during the exams then we use parcially 1/3 of the entire formula. for exmaple in heat tranfer we asssume steady state, or a uniform shape. It sees 
+importnat to know the derivation so we can make the arragements when we face a new challenge.
+for example in heat tranfer we knew about 3 cases.
+case 1 ; speficied T at x=0 , x=l 
+T(0)=T1 ,T(l)= T2, 
+T(x) = c1T+c2 
+1. x = 0
+T(0)= C2 
+C2= T1 
+x= l 
+T(L)= C1l + c2 = T2 
+2. T(x)= (T2-T1)/l (x) + T1 
+Case 2 ; T(0) = T1 
+-k (dt/dx)(l)= h [(T(l))-(Tinfinity)]
+case 3: 
+qx = Tinfinity1 - Tinfinity2)/rev1+red+rev2 
+but in the qiz we got a bean with 2 contanst temperatures on the sides , one each, and convection a long the beam. 
+
+
+nov 3 , 2026-------------------------------------
+#for the case of fully developmed velocity then what it means a uniform heat flux? 
+, what is means a local heat coefficient  ??? 
+
+what is the precedure to solve a proble: 
+universal procedure find out the equation that is the most related to the question, and specify what are the unkowns.
+
+
+#how we coould undetand that the. heat is a partial differencial equation with respect of time. 
+
+
+
+-----------
+# So the governing eq for conduction is :
+dTdt = (q'''/rp Cp ) + alpha [(d^2T/dx^2)+(d^2T/dy^2)+(d^2T/dt^2)] 
+and the 2D equation is d^2T/dx^2 = dT/alpha*dt . how do we reach that point to reduce the eq to its 2d form?? 
+
+how do we use the heisler's chart ? is that for conduction or convection ?? 
+
+explain the dimentionless equation, which is dimentionless,  sigma*= (T-Tinf)/(Ti- Tinf), s = x/L, F0 = (alpha*t)/L^2, Bi= h*L /K , explain what are the ratios of this formulas indicating. ( thse dimentionless vallues are ratios, is not it ?)
+then all combine in a new funtion , but wha the funtion represents : sigma* = f(z,F0,Bi)  
+So the bill number depend on the leght of the fin we are analizing. so if we are using a 100 mm fin and the question ask us for what happens at the 20 mm then we use the 20 mm ?? 
+
+
+------------------------
+
+# from chapter  7 - 10  
+
+
+
+
+problem : Air at a mean velocity of u = 0.5 m/s flows hrough a long, heated pipe of diamer 4cm. The surface
+of the pipe is maintained at a consant temperature Ts = 95 c . consiedr a 50 cm pipe section far from the 
+inlet is 25 c . determine the rae of heat transfer to the air in this section. 
+
+
+find the most related equation, how we justify  if the flow is at a laminar regime or not. 
+WHat values are agiven and which values we have to check in a table. 
+What assumtions we have t make. can we assume 25 < Tm(0) < 95 (should it be the avergae Temperature?) 
+
+Tm>Ts mus be higer cause it is been warmed. 
+
+how come the whole process have to be redone with th new average temperature ??? is there a software, a website that help us with the calculations? 
+
+
+
+the way we should solve the problems, as my professor mentioned is by chossing the temerature equation you need, then solving for the velocity , then solving for the temperature distribution.  
+
+What is the continuity equation? is it the stage in which the profile of hte velocit no longer change with TIME? how is that related to the most importsnt equation of fluid mechanics the Reionlad numbers 
+Re = pvL / dynamics viscosity. 
+
+")
