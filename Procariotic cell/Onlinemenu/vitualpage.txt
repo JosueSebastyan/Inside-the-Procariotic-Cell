@@ -1,0 +1,9 @@
+https://github.com/adefilippo83/FoodDesk?utm_source=chatgpt.com
+
+https://chatgpt.com/share/6af39d33-ae98-83e9-9cb0-98e06156faec
+
+
+once this code it fork I want to focus in the waiter exerince first. what could be the prompt i have to use to make ai extract the name, category from the photo of a menu. 
+also i want to hide for now other funtions not related to taking orders. the idea is to create a digital menu that the waiter could see and add notes to any of the request of the guest.
+
+

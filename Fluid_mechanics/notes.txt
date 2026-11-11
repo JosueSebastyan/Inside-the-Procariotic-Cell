@@ -1,0 +1,85 @@
+WHEN WE CONSIDER :
+Average fluid velocity 
+pipe diameter
+pipe length 
+pipe roughness or relative roughness 
+fluid density 
+viscosity 
+
+then the loss of energy appears as the pressure drop 
+
+ Deltha P = f(DEltha length / diameter) *0.5* ro * V^2_avg
+
+whe f = pipe friction factor f(Re, epsilon/Diameter)
+
+and head loss is hf = Deltha P / ro *gravity
+
+so how come we can use the moody diagram. is that the realtion of f and Re ? does it depends on shape / geometry ?
+
+Three regions in the moody diagram. 
+
+for the first region where RE < 2100 , where the flow is smooth and laminar , what is the friction factor curve? 
+
+for the second region 2100 <Re<4000 
+ten how do we know the fictio nfactor, how we interpoate
+
+region 3 :
+
+for Re > 4000 the flow is turbulent 
+1/ (f)^0.5 = -2 log[((Epsilon/Diameter) + 2.81)/(3.7 * Re (f^0.5)]
+
+then balisus formula 
+A.Re<= 10 ^5 , f = 0.316 / Re^0.25
+
+B.Re < 10 ^5 , f = 0.184/ Re^0.25
+
+in which cases  we consider the balisus solution, when we consider double the formula A ? TEst my undestanding with a question abou it. I have diffculty to undestand in which cases we use 
+blasius, is it when we deal with a pipe or it could be when there is an object expose to the convectioneffect of a fluid. a
+
+
+---------------------------------
+11/11/2026
+
+#for turbulent flow (Re= p Uavg Dh / nu > 4000)
+use moody diagram or the formulas as given for circular pipe. how we can undestand this in practice. (what is the difference btw blasius and colebrook )
+for laminar flows, we use f = c / Re where c depend of the shape of the pipe cross section. 
+c = 96, 62.20, 56.92 
+#appliaction of the extended bernulli eq. 
+single pipe syste, 
+let m_dot = mass flow rate (kg/second), D = pipe diameter
+L= pipe length and DElthaP = pressure drop 
+
+there are 3 main problem types, since DElthaP = funtion of m_dot,  L, Diameter
+1.m_dot,length,diameter speficied, calculate DelthaP 
+2.DelthaP, length, diagram specified , calculate m_dot
+3.DelthaP, m_dot, length speficied calcualte Diameter.
+
+IMPORTANT TO PRACTICE THOSE 3 
+
+What is the head loss , DelthaP/ro*gravity due to pipe friction is called major loss , and those due to volves fitting, etc are called "minor losses".
+
+
+#example in a fluid pumpingn system in a manofacturing plant a product need to be trasnported from tank A to B as shown: 
+
+
+h = 20 m 
+Pa = 101 kpa 
+ro= 1100 kg/ m^3 
+u = 2*10^-3 kg/m*s 
+* 10 cm ID 
+plastic pipe 
+total length L = 40 m + 2 elbows .
+
+claculate the ppumping power, Wshaft in Kw , requiered to meet the desired maximun flow rate of 20 m^3/min 
+
+Pumping power = Wshaft (J/kg) x mass flow rate (kg/s)
+
+first find the minor loss coefficient , how this loss happen s? 
+from tan A to pump 
+- square edge entrance k = 0.5 see table 8 -9 
+- gate valve fully open k =0.2 
+- 2 elbows k = 0.9 smooth 90 threaded elbow 
+from pump to tank B 
+- 2 elbows K = 0.3 (smooth 90 , flanged elbow)
+-why the k value of a valve change if the shape of the valve is different ? 
+-globe valve fully open k =10 

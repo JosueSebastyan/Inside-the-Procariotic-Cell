@@ -1,0 +1,8 @@
+#
+why we use the z1 =3 ad z2 = 0.2 ? are we suppose to analyse the fluid on a single point? or are we suppose to analizy what happen after and before the motion? 
+i think we analize a single point using the bernulli equation. 
+why for Patm we use the gage pressure ? how come we use gage pressure when the point is exposed to the atosphere then we should conisder it 0 ? 
+
+how come for part b the volume lost / the flow rate give us time ?  m^3 / m^3/s  = s 
+
+how come the area of the tank for part b of question 1 is pi ? as if we are dealing with the area of a cylinder of diamter 2 ?? it should be : 2 pi r h + pi r^2
