@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Lever under combined loading · Handout 16</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#f3f4ed;color:#182c32;font:16px/1.45 "DM Sans",system-ui,sans-serif}main{max-width:1220px;margin:auto;padding:32px}h1{font:clamp(32px,5vw,62px)/1.03 Georgia,serif;letter-spacing:-.045em;margin:8px 0 14px}h2{font:26px Georgia,serif;margin:0 0 14px}h3{font-size:16px}header{margin-bottom:24px}small,output,.metric strong,pre{font-family:ui-monospace,monospace}small{color:#36615b;letter-spacing:.08em}.grid,.plots{display:grid;grid-template-columns:minmax(0,1.8fr) minmax(250px,1fr);gap:16px}.card{background:#fffef8;border:1px solid #c8d0c8;border-radius:12px;padding:19px;margin-bottom:16px}.scene{background:#163539;color:#ecf5e9}.scene svg{width:100%;touch-action:none;cursor:grab}.scene button{float:right}button,input,select{font:inherit}button{border:1px solid #99aaa3;background:#f6f8ed;border-radius:6px;padding:4px 10px;cursor:pointer}label{display:block;margin:10px 0 2px;font-weight:600}input[type=range]{width:100%;accent-color:#167a70}output{float:right;font-size:.94em}select,input[type=number]{padding:5px;max-width:100%}.metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(136px,1fr));gap:10px;margin:12px 0 20px}.metric{border-top:3px solid #168276;padding:9px 0}.metric strong{display:block;font-size:22px}.plots{grid-template-columns:1fr 1fr}.plots svg{display:block;width:100%;max-height:235px}p{margin:8px 0}.muted,figcaption{font-size:14px;color:#47625e}.scene .muted{color:#bad3c9}details{margin:12px 0}summary{font-weight:bold;cursor:pointer}table{border-collapse:collapse;width:100%}td,th{text-align:left;padding:6px;border-bottom:1px solid #dce0d8}pre{white-space:pre-wrap}.warn{color:#a04421}.axis{stroke:#9daea7}.svgtext{font:12px system-ui}button:focus-visible,input:focus-visible{outline:3px solid #dda450}@media(max-width:720px){main{padding:15px}.grid,.plots{grid-template-columns:1fr;gap:0}.card{padding:14px}}
+</style>
+<main><header><small>SOLID MECHANICS / HANDOUT 16</small><h1>Lever under combined loading</h1><p>Cut the upright at H to see how one tip force produces bending and torsion.</p></header>
+<div class="grid"><section class="card scene"><button id="view">Reset view</button><h2>Lever ABD</h2><svg id="model" viewBox="0 0 600 345" role="img" aria-label="Rotatable 3D lever, section at H and force at D"></svg><div class="muted">Drag to orbit · teal ring = section · amber arrow = applied force</div></section>
+<section class="card"><h2>Section &amp; load</h2><label for="load">Tip force P<sub>z</sub> <output id="loadValue"></output></label><input type="range" id="load" min="-300" max="300" step="1" value="-150">
+<label for="height">Cut height above A <output id="heightValue"></output></label><input type="range" id="height" min="0" max="14" step=".1" value="4">
+<label for="side">Surface point</label><select id="side"><option value="1">H · front fiber (+z)</option><option value="-1">Opposite fiber (−z)</option></select><p class="muted">AB = 14 in · BD = 18 in · solid rod Ø 1.2 in. Positive z points out of the lever plane.</p><button id="reset">Restore handout</button>
+</section></div>
+<section class="card"><h2>Stress at the selected fiber</h2><div class="metrics" id="metrics"></div><p id="meaning"></p><p id="valid" class="muted"></p></section>
+<section class="card"><h2>Rotate the stress element</h2><label for="angle">Plane normal θ from +x toward +y <output id="angleValue"></output></label><input id="angle" type="range" min="-180" max="180" step="any" value="0"><button id="principal">Principal plane</button> <button id="shear">Maximum shear plane</button>
+<div class="plots"><div><h3>Element in the x–y plane</h3><svg id="element" viewBox="-125 -116 250 232" aria-label="Rotated element with signed normal and shear traction arrows"></svg><figcaption>Teal arrows show normal stress. Orange arrows show shear. Arrow directions follow the signs on each face.</figcaption></div><div><h3>Mohr’s circle</h3><svg id="mohr" viewBox="0 0 340 230" aria-label="Mohr circle and transformed face stresses"></svg><figcaption>Positive shear plots upward. Turning the element by θ moves the x′ point clockwise by 2θ.</figcaption></div></div><p id="rotated"></p><p id="planes"></p></section>
+<section class="card"><h2>Follow the cut</h2><div id="steps"></div><details><summary>Tensor and analytical checks</summary><pre id="tensor"></pre><p id="checks"></p></details></section></main>
+<script>
+// Engine: SI inputs internally. Returned forces, moments and stresses use N, N m and Pa.
+const IN=.0254, LBF=4.4482216152605, KSI=1000*LBF/(IN*IN), DEG=Math.PI/180;
+function solve(forceLbf,heightIn,side){
+ const p=forceLbf*LBF,c=.6*IN,z=side*c,dy=(14-heightIn)*IN,dx=18*IN;
+ const I=Math.PI*c**4/4,J=2*I,A=Math.PI*c*c;
+ const mx=dy*p,T=-dx*p,sy=-mx*z/I,t=T*z/J;
+ const mean=sy/2,R=Math.hypot(mean,t),hi=mean+R,lo=mean-R;
+ const theta=R===0?null:Math.atan2(2*t,-sy)/(2*DEG);
+ return {p,c,z,dy,dx,I,J,A,mx,T,sy,t,mean,R,hi,lo,theta,maxShear:(Math.max(hi,0)-Math.min(lo,0))/2};
+}
+function transform(s,angle){
+ const a=2*angle*DEG,shift=-s.mean*Math.cos(a)+s.t*Math.sin(a);
+ return {x:s.mean+shift,y:s.mean-shift,t:s.mean*Math.sin(a)+s.t*Math.cos(a)};
+}
+function verify(s){
+ const tol=1e-10*Math.max(1,s.R);
+ return [Math.abs(s.hi+s.lo-s.sy)<tol,
+ [ [0,s.t],[s.sy,-s.t] ].every(([x,y])=>Math.abs(Math.hypot(x-s.mean,y)-s.R)<tol),
+ Math.abs(transform(s,s.theta??0).t)<tol];
+}
+</script>
+<script>
+const el=id=>document.getElementById(id),fmt=(x,n=3)=>(Math.abs(x)<.5*10**-n?0:x).toFixed(n),ks=x=>fmt(x/KSI);
+const line=(a,b,color,w=1)=>'<line x1="'+a[0]+'" y1="'+a[1]+'" x2="'+b[0]+'" y2="'+b[1]+'" stroke="'+color+'" stroke-width="'+w+'"/>';
+const txt=(p,s,color='#203e40')=>'<text x="'+p[0]+'" y="'+p[1]+'" fill="'+color+'" class="svgtext">'+s+'</text>';
+const dot=(p,r,col)=>'<circle cx="'+p[0]+'" cy="'+p[1]+'" r="'+r+'" fill="'+col+'"/>';
+const polygon=(points,col)=>'<polygon points="'+points.map(p=>p.slice(0,2).join(',')).join(' ')+'" fill="'+col+'"/>';
+function arrow(a,b,col,w=2){
+ const dx=b[0]-a[0],dy=b[1]-a[1],len=Math.hypot(dx,dy);
+ if(len<.01)return '';
+ const ux=dx/len,uy=dy/len,k=Math.min(9,len*.45);
+ return line(a,b,col,w)+polygon([b,[b[0]-k*ux+k*.45*uy,b[1]-k*uy-k*.45*ux],[b[0]-k*ux-k*.45*uy,b[1]-k*uy+k*.45*ux]],col);
+}
+let yaw=.58,pitch=.28;
+function drawModel(){
+ const h=+el('height').value,side=+el('side').value,p=+el('load').value,cy=Math.cos(yaw),sy=Math.sin(yaw),cp=Math.cos(pitch),sp=Math.sin(pitch);
+ function project([x,y,z]){
+  x-=8;y-=7;const depth=x*sy+z*cy;
+  return [300+15*(x*cy-z*sy),171-15*(y*cp-depth*sp),depth*cp+y*sp];
+ }
+ let svg='',faces=[];
+ function face(points,color){const q=points.map(project);faces.push([q.reduce((v,a)=>v+a[2],0)/q.length,polygon(q,color)]);}
+ for(let i=-6;i<=24;i+=2){svg+=line(project([i,-.8,-6]),project([i,-.8,6]),'#2a494a');}
+ for(let i=-6;i<=6;i+=2)svg+=line(project([-6,-.8,i]),project([24,-.8,i]),'#2a494a');
+ function cylinder(axis,start,end,r,color,level=0){
+  const ring=(v,a)=>axis==='y'?[r*Math.cos(a),v,r*Math.sin(a)]:[v,level+r*Math.cos(a),r*Math.sin(a)];
+  const ends=[];
+  for(let i=0;i<48;i++){let a=i*Math.PI/24,b=(i+1)*Math.PI/24;
+   face([ring(start,a),ring(end,a),ring(end,b),ring(start,b)],color(a));ends.push(ring(end,a));}
+  face(ends,color(0));
+ }
+ const metal=a=>'hsl(33 30% '+(63+15*Math.cos(a-1))+'%)';
+ cylinder('y',-.8,0,2.1,()=> '#738c87');cylinder('y',0,14,.6,metal);cylinder('x',0,18,.6,metal,14);
+ faces.sort((a,b)=>a[0]-b[0]);svg+=faces.map(q=>q[1]).join('');
+ const ring=Array.from({length:65},(_,i)=>project([.64*Math.cos(i*Math.PI/32),h,.64*Math.sin(i*Math.PI/32)]));
+ svg+='<polyline points="'+ring.map(p=>p.slice(0,2).join(',')).join(' ')+'" fill="none" stroke="#62e4c2" stroke-width="3"/>';
+ for(const [name,point] of [['x',[6,0,0]],['y',[0,18,0]],['z',[0,0,6]]]){const b=project(point);svg+=arrow(project([0,0,0]),b,'#9ab6aa',1)+txt([b[0]+4,b[1]],name,'#c5ded1');}
+ for(const [name,point,ox,oy] of [['A',[0,0,0],-19,15],['B',[0,14,0],-16,-10],['D',[18,14,0],8,-8],['H',[0,h,.6*side],-22,-5]]){
+  const q=project(point);if(name==='H')svg+=dot(q,4,'#84f2d4');svg+=txt([q[0]+ox,q[1]+oy],name,'white');}
+ if(p){const a=project([18,14,-Math.sign(p)*6]),b=project([18,14,0]);svg+=arrow(a,b,'#ffac53',4)+txt([a[0],a[1]+16],'P','#ffbd73');}
+ el('model').innerHTML=svg;
+}
+function drawElement(s,v,a){
+ const rad=a*DEG,C=Math.cos(rad),S=Math.sin(rad),map=([x,y])=>[C*x-S*y,-S*x-C*y];
+ let svg=polygon([[-34,-34],[34,-34],[34,34],[-34,34]].map(map),'#dee9df');
+ for(const d of [-1,1])for(const axis of ['x','y']){
+  const xy=(n,t)=>map(axis==='x'?[d*n,d*t]:[d*t,d*n]);
+  function traction(stress,normal){
+   const size=28*Math.abs(stress)/Math.max(1,Math.abs(s.hi),Math.abs(s.lo));if(size<.05)return;
+   let u=normal?xy(37,0):xy(41,-size/2),v=normal?xy(37+size,0):xy(41,size/2);
+   svg+=stress>0?arrow(u,v,normal?'#168276':'#bc5729'):arrow(v,u,normal?'#168276':'#bc5729');
+  }
+  traction(axis==='x'?v.x:v.y,true);traction(v.t,false);
+ }
+ svg+=txt(map([77,0]),'x′')+txt(map([0,77]),'y′');el('element').innerHTML=svg;
+}
+function drawMohr(s,v){
+ const scale=84/Math.max(s.R,1),cx=166,cy=111,pt=(x,y)=>[cx+(x-s.mean)*scale,cy-y*scale],zero=pt(0,0);
+ let svg=line([40,cy],[303,cy],'#a3b1ac')+line([zero[0],13],[zero[0],207],'#a3b1ac')+txt([305,cy-4],'σ')+txt([zero[0]+5,16],'τ');
+ svg+='<circle cx="'+cx+'" cy="'+cy+'" r="'+s.R*scale+'" fill="none" stroke="#538079" stroke-width="2"/>';
+ const a=pt(v.x,v.t),b=pt(v.y,-v.t);svg+=line(a,b,'#a8bcb3')+dot(b,4,'#8c6850')+dot(a,5,'#167a70')+txt([a[0]+7,a[1]-5],'x′')+(s.R?txt([b[0]+7,b[1]+13],'y′'):'');
+ el('mohr').innerHTML=svg+txt([28,228],'σmin '+ks(s.lo)+' ksi')+txt([192,228],'σmax '+ks(s.hi)+' ksi');
+}
+function update(){
+ const p=+el('load').value,h=+el('height').value,z=+el('side').value,a=+el('angle').value,s=solve(p,h,z),v=transform(s,a);
+ el('loadValue').value=p+' lbf';el('heightValue').value=fmt(h,1)+' in';el('angleValue').value=fmt(a,2)+'°';
+ el('metrics').innerHTML=[['Normal σx',0],['Bending σy',s.sy],['Torsion τxy',s.t],['Principal σ₁',s.hi],['Principal σ₂',0],['Principal σ₃',s.lo],['Absolute τmax',s.maxShear]].map(([k,n])=>'<div class="metric">'+k+'<strong>'+ks(n)+' <small>ksi</small></strong></div>').join('');
+ el('meaning').textContent=s.sy?'The selected fiber is in '+(s.sy>0?'tension':'compression')+'. Torque produces shear toward '+(s.t>0?'+x':'−x')+' on its +y face.':p?'The bending arm is zero at this section. Torque still produces shear.':'With no applied load, all section resultants and stresses vanish.';
+ let near=[];if(h<1.2)near.push('fixed support A');if(14-h<1.2)near.push('elbow B');
+ el('valid').textContent=(near.length?'Within one diameter of '+near.join(' and ')+'. Local peak stresses may differ.':'Section clears the one-diameter proximity check.')+' Nominal straight-rod solution assumes linear elasticity, small deflections and negligible self-weight.';
+ el('valid').className=near.length?'warn':'muted';
+ el('rotated').textContent='Rotated faces (ksi) · σx′ = '+ks(v.x)+'   ·   σy′ = '+ks(v.y)+'   ·   τx′y′ = '+ks(v.t);
+ el('planes').textContent=s.theta===null?'Zero stress: every plane is principal.':'Principal plane normals: '+fmt(s.theta,2)+'° (σ₁) and '+fmt(s.theta+90,2)+'° (σ₃), modulo 180°. The z normal carries σ₂ = 0. Maximum in-plane shear magnitude occurs at '+fmt(s.theta+45,2)+'° and '+fmt(s.theta-45,2)+'°.';
+ el('principal').disabled=el('shear').disabled=s.theta===null;
+ const moments=[s.mx,s.T,0].map(x=>fmt(x/(LBF*IN),1));
+ el('steps').innerHTML='<p><b>1 · Transfer P to the cut centroid C.</b> r = D − C = (18, '+fmt(14-h,1)+', 0) in. On the upper free body the cut supplies −P and −r × P. On the lower material’s +y face both signs reverse.</p><p><b>2 · Resolve force and moment on +y.</b> F = (0, 0, '+p+') lbf. M = r × P = ('+moments.join(', ')+') lbf·in. Mx = (14 − y)Pz bends AB. T = My = −18Pz twists it. Because dMx/dy = −Pz, the signed shear is Vz = −dMx/dy.</p><p><b>3 · Evaluate the surface fiber.</b> z = '+fmt(z*.6,1)+' in, I = πc⁴/4 = '+fmt(s.I/IN**4,5)+' in⁴, J = 2I = '+fmt(s.J/IN**4,5)+' in⁴.</p><table><tr><th>Contribution</th><th>At the fiber</th></tr><tr><td>Axial · N/A</td><td>0 (P is transverse)</td></tr><tr><td>Bending · −Mx z/I</td><td>σy = '+ks(s.sy)+' ksi</td></tr><tr><td>Torsion · Tz/J</td><td>τxy = τyx = '+ks(s.t)+' ksi</td></tr><tr><td>Transverse shear · Vz</td><td>τyz = 0 on this free ±z face</td></tr></table><p><b>4 · Transform.</b> Circle center = σy/2 = '+ks(s.mean)+' ksi. Radius = √[(σy/2)² + τxy²] = '+ks(s.R)+' ksi. The in-plane principal stresses are the center ± radius.</p>';
+ el('tensor').textContent='Stress tensor [x, y, z] in ksi\n'+[[0,s.t,0],[s.t,s.sy,0],[0,0,0]].map(row=>row.map(x=>ks(x).padStart(10)).join('')).join('\n');
+ el('checks').textContent=verify(s).every(Boolean)?'Checks pass · trace invariant · both original face points on circle · zero shear on principal plane':'Analytical check failed';
+ drawModel();drawElement(s,v,a);drawMohr(s,v);
+}
+for(const id of ['load','height','side','angle'])el(id).oninput=update;
+function setPlane(offset){let s=solve(+el('load').value,+el('height').value,+el('side').value);if(s.theta!==null){el('angle').value=s.theta+offset;update();}}
+el('principal').onclick=()=>setPlane(0);el('shear').onclick=()=>setPlane(45);
+el('view').onclick=()=>{yaw=.58;pitch=.28;drawModel();};
+el('reset').onclick=()=>{el('load').value=-150;el('height').value=4;el('side').value=1;el('angle').value=0;el('view').click();update();};
+const scene=el('model');let drag=null;
+scene.onpointerdown=e=>{drag=[e.clientX,e.clientY];scene.setPointerCapture(e.pointerId);};
+scene.onpointermove=e=>{if(!drag)return;yaw-=(e.clientX-drag[0])*.008;pitch=Math.max(-1.35,Math.min(1.35,pitch+(e.clientY-drag[1])*.008));drag=[e.clientX,e.clientY];drawModel();};
+scene.onlostpointercapture=scene.onpointerup=scene.onpointercancel=()=>{drag=null;};
+update();
+</script>
+</html>
